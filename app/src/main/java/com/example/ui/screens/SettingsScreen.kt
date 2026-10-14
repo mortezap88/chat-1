@@ -166,6 +166,14 @@ fun SettingsScreen(
     val coroutineScope = rememberCoroutineScope()
     var selectedCategory by remember { mutableStateOf<SettingsCategory?>(null) }
 
+    androidx.activity.compose.BackHandler {
+        if (selectedCategory != null) {
+            selectedCategory = null
+        } else {
+            onClose()
+        }
+    }
+
     var themeMode by remember(currentSettings.themeMode) { mutableStateOf(currentSettings.themeMode) }
     val isDark = when (themeMode) {
         "Light" -> false

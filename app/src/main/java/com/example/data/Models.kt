@@ -38,12 +38,6 @@ data class LinguisticCorrection(
     val reason: String
 )
 
-data class ThreePartParsedResponse(
-    val mainAnswer: String,
-    val polishedText: String? = null,
-    val corrections: List<LinguisticCorrection> = emptyList()
-)
-
 data class UnifiedTurnUpdate(
     val answer: String = "",
     val userSentence: String? = null,
@@ -86,26 +80,27 @@ data class AppSettings(
     val thinkingEnabled: Boolean = false,
     val thinkingLevel: String = "Low", // "Low", "Medium", "High" (per AI Studio documentation)
     val tokenStreaming: Boolean = true,
-    val transcriptionModel: String = "gemini-flash-lite-latest",
-    val smoothingModel: String = "gemini-flash-lite-latest",
-    val contextualSmoothing: Boolean = true,
-    val grammarInspector: Boolean = true,
-    val micSensitivity: String = "Low",
-    val silencePauseDuration: Float = 2.0f,
     val maxFontSizeSp: Int = 24,
     val longTermMemoryEnabled: Boolean = true,
     val maxRetrievedMemories: Int = 4,
     val vibrationPattern: String = "ocean_surge",
     val minVoiceHoldDurationSeconds: Float = 1.0f,
-    val ttsModel: String = "gemini-3.8-flash-lite-tts",
     val selectedVoicePersona: String = "david_manchester",
-    val isMicEnabled: Boolean = true,
     val ttsAutoSpeak: Boolean = false,
-    val dedicatedTtsModelActive: Boolean = true,
     val tavilySearchEnabled: Boolean = false,
     val tavilyThoroughness: String = "Balanced",
-    val tavilyMaxResults: Int = 5,
-    val themeMode: String = "Dark" // "Dark", "Light", or "System"
+    val silenceTrimmingEnabled: Boolean = true,
+    val themeMode: String = "Dark", // "Dark", "Light", or "System"
+    val isMicEnabled: Boolean = true,
+    val silencePauseDuration: Float = 2.0f,
+    val micSensitivity: String = "Low",
+    val transcriptionModel: String = "gemini-flash-lite-latest",
+    val smoothingModel: String = "gemini-flash-lite-latest",
+    val ttsModel: String = "gemini-3.8-flash-lite-tts",
+    val dedicatedTtsModelActive: Boolean = true,
+    val contextualSmoothing: Boolean = true,
+    val grammarInspector: Boolean = true,
+    val tavilyMaxResults: Int = 5
 )
 
 data class ExtractedMemoryItem(

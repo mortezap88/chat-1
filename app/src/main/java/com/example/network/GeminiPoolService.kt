@@ -9,7 +9,6 @@ import com.example.data.CorrectionType
 import com.example.data.ExtractedMemoryItem
 import com.example.data.KeyStatus
 import com.example.data.LinguisticCorrection
-import com.example.data.ThreePartParsedResponse
 import com.example.data.UnifiedTurnUpdate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -484,8 +483,7 @@ Respond strictly adhering to this 4-part layout:
         val candidateModels = listOf(
             resolveModelName(model),
             "gemini-3.8-flash-lite-tts",
-            "gemini-3.8-flash-tts",
-            "gemini-2.5-flash-preview-tts"
+            "gemini-3.8-flash-tts"
         ).distinct()
 
         for (targetModel in candidateModels) {
@@ -509,10 +507,7 @@ Respond strictly adhering to this 4-part layout:
                     genConfig.put("responseModalities", JSONArray().put("AUDIO"))
                     val speechConfig = JSONObject().apply {
                         val voiceConfig = JSONObject().apply {
-                            put("voice", voiceName)
-                            val prebuilt = JSONObject().apply {
-                                put("voiceName", voiceName)
-                            }
+                            val prebuilt = JSONObject().apply { put("voiceName", voiceName) }
                             put("prebuiltVoiceConfig", prebuilt)
                         }
                         put("voiceConfig", voiceConfig)
@@ -556,10 +551,8 @@ Respond strictly adhering to this 4-part layout:
                         }
                     } else {
                         Log.w("GeminiPool", "TTS call to $targetModel returned HTTP ${resp.code}: $body")
-                        // If 404, try next model candidate without marking key as broken
-                        if (resp.code == 404) {
-                            break
-                        }
+                        if (resp.code == 404) break
+                        markKeyFailed(keyIndex, "HTTP ${resp.code}")
                         attempts++
                     }
                 } catch (e: Exception) {
